@@ -1,8 +1,10 @@
-# imusic
+# iMusic
 
-> A Vue music app.
+> A Vue music app. 一个基于Vue的移动端音乐app
 
-## Build Setup
+
+
+## 实现的功能
 
 ``` bash
 # install dependencies
@@ -18,4 +20,8 @@ npm run build
 npm run build --report
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+
+## 技术栈
+
+项目使用了Vue全家桶：Vue + Vue-Router + Vuex

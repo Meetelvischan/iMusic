@@ -1,8 +1,9 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
+    <img src="./assets/images/logo.png">
     <!-- router-view加载router里面的内容 -->
     <router-view/>
+    <router-link to="next">Next</router-link>
   </div>
 </template>
 
