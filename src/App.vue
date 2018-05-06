@@ -2,8 +2,11 @@
   <div id="app">
     <img src="./assets/images/logo.png">
     <!-- router-view加载router里面的内容 -->
-    <router-view/>
-    <router-link to="next">Next</router-link>
+    <router-link to="/user/elvis">我是elvis</router-link>
+    <router-link to="/user/chen">我是chen</router-link>
+    <transition name="fade">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 
@@ -21,5 +24,8 @@ export default {
     text-align: center;
     color: #2c3e50;
     margin-top: 60px;
+  }
+  .fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
   }
 </style>
