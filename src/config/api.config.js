@@ -1,8 +1,9 @@
 /**
  * 使用jsonp跨域获取音乐
  */
+/* eslint-disable */
 export default {
-  //歌曲排名
+  // 歌曲排名
   rank_songs: {
     url: 'https://c.y.qq.com/v8/fcg-bin/fcg_v8_toplist_cp.fcg',
     params: (id) => {
@@ -19,12 +20,12 @@ export default {
         page: 'detail',
         type: 'top',
         topid: id,
-        _: new Date().getTime()
-      }
+        _: new Date().getTime(),
+      };
     },
-    jsonp: 'jsonpCallback'
+    jsonp: 'jsonpCallback',
   },
-  //排行榜
+  // 排行榜
   rank_list: {
     url: 'https://c.y.qq.com/v8/fcg-bin/fcg_myqq_toplist.fcg',
     params: () => {
@@ -37,12 +38,12 @@ export default {
         notice: 0,
         platform: 'h5',
         needNewCode: 1,
-        _: new Date().getTime()
-      }
+        _: new Date().getTime(),
+      };
     },
-    jsonp: 'jsonpCallback'
+    jsonp: 'jsonpCallback',
   },
-  //获取专辑
+  // 获取专辑
   album: {
     url: 'https://c.y.qq.com/v8/fcg-bin/fcg_v8_album_info_cp.fcg',
     params: (id) => {
@@ -56,12 +57,12 @@ export default {
         outCharset: 'utf-8',
         notice: 0,
         platform: 'yqq',
-        needNewCode: 0
-      }
+        needNewCode: 0,
+      };
     },
-    jsonp: 'jsonpCallback'
+    jsonp: 'jsonpCallback',
   },
-  //歌手信息
+  // 歌手信息
   singer_info: {
     url: 'https://c.y.qq.com/v8/fcg-bin/fcg_v8_singer_track_cp.fcg',
     params: (id) => {
@@ -79,12 +80,12 @@ export default {
         platform: 'h5page',
         needNewCode: 1,
         from: 'h5',
-        _: new Date().getTime()
+        _: new Date().getTime(),
       }
     },
-    jsonp: 'jsonpCallback'
+    jsonp: 'jsonpCallback',
   },
-  //搜索
+  // 搜索
   search: {
     url: 'https://c.y.qq.com/splcloud/fcgi-bin/smartbox_new.fcg',
     params: (keyword) => {
@@ -99,10 +100,10 @@ export default {
         outCharset: 'utf-8',
         notice: 0,
         platform: 'yqq',
-        needNewCode: 0
+        needNewCode: 0,
       }
     },
-    jsonp: 'jsonpCallback'
+    jsonp: 'jsonpCallback',
   },
   hotkey: {
     url: 'https://c.y.qq.com/splcloud/fcgi-bin/gethotkey.fcg',
@@ -121,7 +122,7 @@ export default {
     },
     jsonp: 'jsonpCallback'
   },
-  //主页数据
+  // 主页数据
   home_page_data: {
     url: 'https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg',
     params: () => {
@@ -139,62 +140,62 @@ export default {
     },
     jsonp: 'jsonpCallback'
   },
-  //歌词
+  // 歌词
   lyric: {
     url: 'https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric.fcg',
     params: (id) => {
       return {
-        nobase64:1,
-        musicid:id,
-        songtype:0
+        nobase64: 1,
+        musicid: id,
+        songtype: 0
       }
     },
-    jsonp:'callback'
+    jsonp: 'callback'
   },
-  //专辑
-  cd:{
-    url:'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg',
-    params:(id)=>{
+  // 专辑
+  cd: {
+    url: 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg',
+    params: (id) => {
       return {
-        g_tk:5381,
-        uin:0,
-        format:'jsonp',
-        inCharset:'utf-8',
-        outCharset:'utf-8',
-        notice:0,
-        platform:'h5',
-        needNewCode:1,
-        new_format:1,
-        pic:500,
-        disstid:id,
-        type:1,
-        json:1,
-        utf8:1,
-        onlysong:0,
-        nosign:1,
-        _:new Date().getTime()
+        g_tk: 5381,
+        uin: 0,
+        format: 'jsonp',
+        inCharset: 'utf-8',
+        outCharset: ' utf-8',
+        notice: 0,
+        platform: 'h5',
+        needNewCode: 1,
+        new_format: 1,
+        pic: 500,
+        disstid: id,
+        type: 1,
+        json: 1,
+        utf8: 1,
+        onlysong: 0,
+        nosign: 1,
+        _: new Date().getTime()
       }
     },
     jsonp: 'jsonpCallback'
   },
-  first_page_data:{
-    url:"https://c.y.qq.com/v8/fcg-bin/fcg_first_yqq.fcg",
-    params(){
-      return{
-        format:'jsonp',
-        tpl:'v12',
-        page:'other',
-        rnd:0,
-        g_tk:new Date().getTime(),
-        loginUin:0,
-        hostUin:0,
-        inCharset:'utf8',
-        outCharset:'GB2312',
-        notice:0,
-        platform:'yqq',
-        needNewCode:0
+  first_page_data: {
+    url: "https://c.y.qq.com/v8/fcg-bin/fcg_first_yqq.fcg",
+    params() {
+      return {
+        format: 'jsonp',
+        tpl: 'v12',
+        page: ' other',
+        rnd: 0,
+        g_tk: new Date().getTime(),
+        loginUin: 0,
+        hostUin: 0,
+        inCharset: 'utf8',
+        outCharset: 'GB2312',
+        notice: 0,
+        platform: 'yqq',
+        needNewCode: 0
       }
     },
     jsonp: 'jsonpCallback'
   }
-}
+};

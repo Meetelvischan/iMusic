@@ -1,10 +1,12 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import ApiServer from './apiService'
+import ApiService from './apiService';
+import PlayService from './playService';
 
 Vue.use(Vuex);
 export default new Vuex.Store({
   modules: {
-    ApiServer,
+    ApiService,
+    PlayService,
   }
 });
