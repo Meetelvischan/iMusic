@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <Search></Search>
     <transition>
       <div id="music-bar">
         <audio src=""></audio>
@@ -14,7 +15,8 @@
 </template>
 
 <script>
-import {mapMutations, mapState, mapGetters} from 'vuex'; 
+import {mapMutations, mapState, mapGetters} from 'vuex';
+import Search from './components/Search'
 export default {
   name: 'App',
   data () {
@@ -35,6 +37,9 @@ export default {
       song: state => state.PlayService.song,
     }),
   },
+  components: {
+    Search,
+  }
 };
 </script>
 
