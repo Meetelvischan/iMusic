@@ -83,7 +83,7 @@ export default {
   },
   methods: {
     search: function(keyword){
-      this.keyword = keyword;
+      this.keyword = keyword.trim();
       this.$store.dispatch('search',keyword).then((response)=>{
         // 触发action，运行search，返回一个promise
         this.searchResult = response.data.data;
@@ -230,7 +230,7 @@ export default {
     background: #eee;
     display: flex;
     flex-direction: column;
-    justify-content: flex-startss;
+    justify-content: flex-start;
     .result-group {
       background: #eee;
       .group-header {
@@ -238,7 +238,7 @@ export default {
         flex-direction: row;
         height: 40px;
         align-items: center;
-        padding: 0 0 5px 10px;
+        padding-top: 5px;
         background: #eee;
         .group-icon {
           width: 25px;
@@ -256,7 +256,6 @@ export default {
         border-radius: 5px;
         border-bottom: 1px solid #eee;
         height: 40px;
-        margin-left: 10px;
         padding-left: 10px;
         cursor: pointer;
         .result-title {
@@ -301,7 +300,6 @@ export default {
         background: #fff;
         border-bottom: 1px solid #eee;
         border-radius: 5px;
-        margin-left: 10px;
         cursor: pointer;
         .album-img {
           height: 40px;
