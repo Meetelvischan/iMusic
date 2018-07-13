@@ -11,18 +11,27 @@
         <button id="search-cancel-button" @click="searchCancel">取消</button>
       </div>
     </div>
-    <div class="search-keyword" v-if="searchResult==null&&searchShow">
-      <div class="search-history">
-        <div class="search-history-item" v-for="item in searchHistory" @click="search(item)">{{item}}</div>
+    <transition name="fade">
+      <div class="search-keyword" v-if="searchResult==null&&searchShow">
+        <div class="search-history">
+          <div class="search-history-item" v-for="item in searchHistory" @click="search(item)">{{item}}</div>
+        </div>
+        <ul class="hot-keyword">
+          <li v-for="(item,index) in hotKeyword" @click="search(item.k)">
+            <span class="hot-keyword-index">{{index+1}}:</span>
+            <span class="hot-keyword-name">{{item.k}}</span>
+            <span class="hot-keyword-num">{{Math.round(item.n/1000)/10}}万</span>
+          </li>
+        </ul>
+        <transition name="fade">
+          <div class="clear-history" v-show="searchHistory.length"><button @click="clearHistory">清除历史</button></div>
+        </transition>
       </div>
-      <ul class="hot-keyword">
-        <li v-for="(item,index) in hotKeyword" @click="search(item.k)">
-          <span class="hot-keyword-index">{{index+1}}:</span>
-          <span class="hot-keyword-name">{{item.k}}</span>
-        </li>
-      </ul>
-    </div>
+    </transition>
     <div class="result" v-if="searchResult!=null&&searchShow">
+      <div class="searching">
+        
+      </div>
       <!-- 单曲搜索start -->
       <div class="result-group" v-if="searchResult.song!=null">
         <div class="group-header">
@@ -32,9 +41,17 @@
         <div class="result-item" v-for="(item,index) in searchResult.song.itemlist">
           <div class="result-title" @click="play(index)">{{item.name}}</div>
           <div class="result-singer" @click="play(index)">{{item.singer}}</div>
+          <div class="result-option">
+            <img src="../assets/images/icon-...black.png" alt="" @click.prevent="tapActionSheet" @touchend.prevent="tapActionSheet">
+          </div>
         </div>
       </div>
       <!-- 单曲搜索end -->
+      <!-- actionSheet -->
+      <transition name="actionSheet-show">
+        <actionSheet v-show="actionSheetShow" @closeActionSheet="tapActionSheet"></actionSheet>
+      </transition>
+
       <!-- 歌手搜索start -->
       <div class="result-group" v-if="searchResult.singer!=null">
         <div class="group-header">
@@ -67,6 +84,7 @@
 </template>
 
 <script>
+import actionSheet from './ActionSheet';
 export default {
   data(){
     return {
@@ -79,6 +97,7 @@ export default {
       isSingerShow: false,
       mid: 0,
       singermid: 0,
+      actionSheetShow: false,
     };
   },
   methods: {
@@ -86,13 +105,14 @@ export default {
       this.keyword = keyword.trim();
       this.$store.dispatch('search',keyword).then((response)=>{
         // 触发action，运行search，返回一个promise
+        // console.log(response);
         this.searchResult = response.data.data;
-        let index = this.searchHistory.indexOf(keyword);
+        let index = this.searchHistory.indexOf(this.keyword);
         if(index !==-1){
           this.searchHistory.splice(index,1);
         };
-        this.searchHistory.unshift(keyword);
-        this.searchHistory = this.searchHistory.slice(0,10);
+        this.searchHistory.unshift(this.keyword);
+        this.searchHistory = this.searchHistory.slice(0,5);
         localStorage.setItem('searchHistory',JSON.stringify(this.searchHistory));
       });
     },
@@ -108,31 +128,70 @@ export default {
       this.searchResult = null;
       this.$emit('searchHide');
     },
+    clearHistory() {
+      this.searchHistory = [];
+    },
     play: function(index){
       this.$store.commit('setPlayList',{
         index,
-        list: this.searchResult.song.itemlist,
+        playList: this.searchResult.song.itemlist,
       });
+      this.$store.state.PlayService.isPlaying = true;
     },
     showAlbum: function(mid){
       this.$router.push({name: 'album',params: {id: mid},})
     },
     showSinger(singermid){
       this.$router.push({name: 'singer',params: {id: singermid},})
+    },
+    tapActionSheet() {
+      this.actionSheetShow = !this.actionSheetShow;
     }
   },
   created(){
-    if(localStorage.serchHistory){
+    if(localStorage.searchHistory){
       this.searchHistory = JSON.parse(localStorage.searchHistory);
     };
     this.$store.dispatch('getHotKey').then((response)=>{
-      this.hotKeyword = response.data.data.hotkey.slice(0,5);
+      // console.log(response);
+      this.hotKeyword = response.data.data.hotkey.slice(0,10);
     });
   },
+  components: {
+    actionSheet,
+  }
 }
 </script>
 
 <style lang="scss" scoped>
+  // 淡入淡出特效
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .3s ease-in-out;
+  }
+  .fade-enter, .fade-leave-to {
+    opacity: 0;
+  }
+  .search-slide-enter-active {
+    transition: all .3s ease-in;
+  }
+  .search-slide-leave-active {
+    transition: all .3s ease-out;
+  }
+  .search-slide-enter, .search-slide-leave-active {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  //actionSheet动画 
+  .actionSheet-show-enter-active {
+    transition: all .3s ease;
+  }
+  .actionSheet-show-leave-active {
+    transition: all .3s ease-out;
+  }
+  .actionSheet-show-enter,.actionSheet-show-leave-active {
+    transform: translateY(100%);
+    opacity: 0;
+  }
   .search-group {
     display: flex;
     flex-direction: row;
@@ -141,6 +200,7 @@ export default {
     width: 100%;
     height: 60px;
     background: #fff;
+    z-index: 1;
   }
   .search-input {
     display: flex;
@@ -181,7 +241,8 @@ export default {
       outline: none;
       border: none;
       background: #fff;
-      font-size: 16px;
+      font-size: 18px;
+      font-weight: 400;
     }
   }
   .search-cancel-show {
@@ -200,9 +261,11 @@ export default {
       max-height: 66px;
       .search-history-item {
         margin: 5px;
-        padding: 0 5px;
-        border: 1px solid #000;
+        padding: 2px 6px;
         border-radius: 14px;
+        color: #fff;
+        background: linear-gradient(to right, #be93c5, #7bc6cc);
+        box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.2);
       }
     }
     .hot-keyword {
@@ -224,6 +287,18 @@ export default {
         }
       }
     }
+    .clear-history {
+      button {
+      display: inline-block;
+      width: 100%;
+      outline: none;
+      border: none;
+      background: #fff;
+      font-size: 16px;
+      height: 40px;
+      font-weight: 700;
+      }
+    }  
   }
   .result {
     margin: 60px 10px;
@@ -231,6 +306,9 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    .searching {
+      text-align: center;
+    }
     .result-group {
       background: #eee;
       .group-header {
@@ -270,6 +348,14 @@ export default {
           text-overflow: ellipsis;
           flex-grow: 1;
           margin-left: .5em;
+        }
+        .result-option {
+          padding-right: .5em;
+          img {
+            display: block;
+            width: 20px;
+            height: 20px;
+          }
         }
       }
       .singer-item {
@@ -313,11 +399,21 @@ export default {
           .album-name {
             font-size: 14px;
             line-height: 20px;
+            max-height: 20px;
+            max-width: 270px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
           }
           .album-author {
             font-size: 12px;
             color: #929292;
             line-height: 20px;
+            max-width: 270px;
+            max-height: 20px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
           }
         }
       }

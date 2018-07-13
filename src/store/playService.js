@@ -19,8 +19,8 @@ export default {
       state.song = state.playList[index];
     },
     //设置播放列表
-    setPlayList(state, playlistObj) {
-      state.playList = playListObj.list;
+    setPlayList(state, playListObj) {
+      state.playList = playListObj.playList;
       state.index = playListObj.index;
       state.song = state.playList[state.index];
     },
@@ -112,10 +112,10 @@ export default {
     duration: (state) => parseInt(state.duration / 60) + ':' + (state.duration % 60),
     // 获取封面地址
     coverImgUrl: (state) => {
-      if (typeof state.song.albumId === 'undefined') {
+      if (typeof state.song.albummid === 'undefined') {
         return def.DEFAULT_IMG;
       } else {
-        return "https://y.gtimg.cn/music/photo_new/T002R500x500M000" + state.song.albumId + ".jpg";
+        return "https://y.gtimg.cn/music/photo_new/T002R500x500M000" + state.song.albummid + ".jpg";
       }
     }
   }

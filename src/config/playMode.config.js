@@ -9,4 +9,8 @@ export const SEQUENTIAL = 1;
 export const RANDOM = 2;
 export const DEFAULT_IMG = require('../assets/images/Vue_Music_Blur.png');
 export const DEFAULT_SONG_NAME = 'iMusic';
-
+export const types = {
+  ALBUM: 10002,
+  CD: 10014,
+  JUMP: 3002
+}
